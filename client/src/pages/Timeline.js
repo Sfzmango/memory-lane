@@ -5,7 +5,7 @@ import AddMoment from "../components/modals/AddMoment";
 import EditMoment from "../components/modals/EditMoment";
 import { QUERY_TIMELINE } from '../utils/queries';
 import { DELETE_MOMENT } from '../utils/mutations';
-import { useBreakpoints} from 'react-breakpoints-hook';
+import { useBreakpoints } from 'react-breakpoints-hook';
 import Auth from '../utils/auth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -114,18 +114,19 @@ const Timeline = () => {
         }
     }
 
-    const checkImage = (imgLink) => {
+    const checkImage = async (imgLink) => {
         console.log(imgLink);
-        fetch(imgLink)
+        await fetch(imgLink)
             .then((res) => {
-                console.log("res: "+res);
-                if (res.status === 200){
+                console.log("res: ");
+                console.log(res);
+                if (res.status === 200) {
                     return true;
                 }
                 else {
                     return false;
                 }
-        });
+            });
     }
 
     // this function renders the (desktop/web view) moments
@@ -170,8 +171,8 @@ const Timeline = () => {
                                 <div className="mr-16 card w-100 bg-secondary shadow-xl border border-zinc-900">
                                     {checkImage(moment.imageLink) ? (
                                         <figure><img src={moment.imageLink} alt={moment.title} /></figure>
-                                    ) : 
-                                    (<></>)
+                                    ) :
+                                        (<></>)
                                     }
 
                                     <div className="card-body">
@@ -180,10 +181,10 @@ const Timeline = () => {
                                         {/*Here we are using verifying the user is logged in and the author so they can
                                         delete moments if they want */}
                                         {Auth.loggedIn() && Auth.getUser().data.username === timeline.author ? (
-                                        <div className="card-actions justify-end">
-                                            <EditMoment timeline={timeline} momentId={moment._id}/>
-                                            <button className="btn btn-error hover:btn-warning" name={moment._id} onClick={handleDeleteBtn}>Delete Moment</button>
-                                        </div>
+                                            <div className="card-actions justify-end">
+                                                <EditMoment timeline={timeline} momentId={moment._id} />
+                                                <button className="btn btn-error hover:btn-warning" name={moment._id} onClick={handleDeleteBtn}>Delete Moment</button>
+                                            </div>
                                         ) : (<></>)}
                                         <h2 className="card-title">{formatMonth(moment.month)} {formatDay(moment.day)} {moment.year}</h2>
                                     </div>
@@ -196,8 +197,8 @@ const Timeline = () => {
                                 <div className="ml-16 bg-secondary card w-100 shadow-xl border border-zinc-900">
                                     {checkImage(moment.imageLink) ? (
                                         <figure><img src={moment.imageLink} alt={moment.title} /></figure>
-                                    ) : 
-                                    (<></>)
+                                    ) :
+                                        (<></>)
                                     }
 
                                     <div className="card-body">
@@ -206,10 +207,10 @@ const Timeline = () => {
                                         {/*Here we are using verifying the user is logged in and the author so they can
                                         delete moments if they want */}
                                         {Auth.loggedIn() && Auth.getUser().data.username === timeline.author ? (
-                                        <div className="card-actions justify-end">
-                                            <EditMoment timeline={timeline} momentId={moment._id}/>
-                                            <button className="btn btn-error hover:btn-warning" name={moment._id} onClick={handleDeleteBtn}>Delete Moment</button>
-                                        </div>
+                                            <div className="card-actions justify-end">
+                                                <EditMoment timeline={timeline} momentId={moment._id} />
+                                                <button className="btn btn-error hover:btn-warning" name={moment._id} onClick={handleDeleteBtn}>Delete Moment</button>
+                                            </div>
                                         ) : (<></>)}
                                         <h2 className="card-title">{formatMonth(moment.month)} {formatDay(moment.day)} {moment.year}</h2>
                                     </div>
@@ -251,12 +252,12 @@ const Timeline = () => {
 
                         <div className="w-0 border-4 border-neutral ml-8">{/*this is the timeline line*/}</div>
 
-                        <div key={moment._id} className="my-6 mx-3 card w-fit bg-secondary border border-zinc-900 shadow-xl col-span-3">  
+                        <div key={moment._id} className="my-6 mx-3 card w-fit bg-secondary border border-zinc-900 shadow-xl col-span-3">
                             {checkImage(moment.imageLink) ? (
-                                            <figure><img src={moment.imageLink} alt={moment.title} /></figure>
-                                        ) : 
-                                        (<></>)
-                                        }
+                                <figure><img src={moment.imageLink} alt={moment.title} /></figure>
+                            ) :
+                                (<></>)
+                            }
 
                             <div className="card-body">
                                 <h2 className="card-title">{moment.title}</h2>
@@ -264,10 +265,10 @@ const Timeline = () => {
                                 {/*Here we are using verifying the user is logged in and the author so they can
                                 delete moments if they want */}
                                 {Auth.loggedIn() && Auth.getUser().data.username === timeline.author ? (
-                                <div className="card-actions justify-end">
-                                    <EditMoment timeline={timeline} moment={moment._id}/>
-                                    <button className="btn btn-error hover:btn-warning" name={moment._id} onClick={handleDeleteBtn}>Delete Moment</button>
-                                </div>
+                                    <div className="card-actions justify-end">
+                                        <EditMoment timeline={timeline} moment={moment._id} />
+                                        <button className="btn btn-error hover:btn-warning" name={moment._id} onClick={handleDeleteBtn}>Delete Moment</button>
+                                    </div>
                                 ) : (<></>)}
                                 <h2 className="card-title">{formatMonth(moment.month)} {formatDay(moment.day)} {moment.year}</h2>
                             </div>
@@ -294,14 +295,14 @@ const Timeline = () => {
         textDecoration: "none"
     }
 
-    if(loading) {
+    if (loading) {
         return (<h4>Loading...</h4>)
     }
 
     return (
         <>
             <h2 className="mt-32 text-center text-neutral text-4xl font-bold" style={fontStyle}><u style={underlineStyle}>{timeline.title}</u></h2>
-            
+
             <div className="flex justify-between">
                 {/*this is our label for the share timeline button, and on click it calls this inline function to
                 post a toast message (as well as send the url to the clipboard)*/}
